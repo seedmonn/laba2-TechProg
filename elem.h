@@ -32,14 +32,13 @@ public:
 
 	friend queue_base& operator+=(queue_base& left, double valuev);
 	friend queue_base& operator-(queue_base& left, queue_base& right);
-	// отсебятина
 	friend ostream& operator << (ostream& s, Time& queue);
 };
 
 queue_base::queue_base() {
-	a = nullptr; //  обнуляем указатель
-	b = nullptr; //  обнуляем указатель 
-	k = 0; // k = кол-во объектов в очереди
+	a = nullptr;
+	b = nullptr;
+	k = 0;
 }
 
 elem* queue_base::get_a() {
@@ -56,27 +55,25 @@ int queue_base::get_k() {
 
 inline void queue_base::add(double valuev)
 {
-	elem* temp = new elem; // Выделяем память для объекта структуры elem.
-	if (k == 0) { // если в очереди 0 элементов 
-		temp->Val = valuev; // то присваиваем в поле Val переменной temp значение, введенное с клавиатуры
-		temp->Prev = nullptr; // в указатель на предыдущий присваиваем значение нулевого указателя, т.к. элемент всего 1
-		a = temp; // переменные а и б отвечают за первый и последний элемент в очереди, т.к. в очереди 1 элемент, то он является одновременно первым и последним
-		b = temp; // temp - "временный" объект структуры присваюващий значения полям базового класса
+	elem* temp = new elem;
+	if (k == 0) {
+		temp->Val = valuev;
+		temp->Prev = nullptr;
+		a = temp;
+		b = temp;
 	}
 	else {
-		temp->Val = valuev; // т.к. это не первый элемент в очереди, в поле val присваиваем значение введенное с клавиатуры
-		temp->Prev = b; // в поле prev присваиваем значение указателя на предыдущий элемент
-		b = temp; // значение и адрес "временной" переменной присваим объекту б, т.е. указатель объекта б теперь имеет указатель на передстоящий элемент в очереди
+		temp->Val = valuev;
+		temp->Prev = b;
+		b = temp;
 	}
-	k++; // увеличиваем счетчик элементов очереди
+	k++;
 }
 
 inline queue_base queue_base::sum(queue_base& obj1, queue_base& obj2)
 {
 	elem* temp = obj1.get_b();
 	queue_base j;
-	if (obj1.get_k() != obj2.get_k()) // доработать 
-		return j;
 	double* och_i = new double[obj1.get_k()];
 	double* och_j = new double[obj2.get_k()];
 	double* och_k = new double[obj1.get_k()];
@@ -126,8 +123,6 @@ inline queue_base queue_base::multiplication(queue_base& obj1, queue_base& obj2)
 {
 	elem* temp = obj1.get_b();
 	queue_base j;
-	if (obj1.get_k() != obj2.get_k()) // доработать 
-		return j;
 	double* och_i = new double[obj1.get_k()];
 	double* och_j = new double[obj2.get_k()];
 	double* och_k = new double[obj1.get_k()];
@@ -173,7 +168,7 @@ inline void queue_base::show()
 	for (int i = 0; i < get_k(); ++i) {
 		cout << "[" << och[i] << "] ";
 	}
-	delete[] och; 
+	delete[] och;
 }
 
 inline queue_base queue_base::operator+(queue_base& b)
@@ -184,24 +179,24 @@ inline queue_base queue_base::operator+(queue_base& b)
 inline queue_base queue_base::operator-=(int)
 {
 	if (!(this->get_k())) {
-		cout << "Очередь пуста!" << endl; // защита, если элементов в очереди нет
+		cout << "Очередь пуста!" << endl;
 		return *this;
 	}
 	if (this->get_k() == 1) {
 		delete this->a;
-		this->a = nullptr; // если элемент в очереди всего один, нет смысла идти с конца до первого, удаляем сразу, и обнуляем указатели
+		this->a = nullptr;
 		this->b = nullptr;
 	}
 	else {
-		elem* temp = this->get_b(); // "временному" объекту структуры присваиваются значения последнего элемента в очереди (т.е. значения полей val и *prev )
-		while (temp->Prev != this->a) { // справа налево продвигаемся по элементам очереди, пока не дойдем до второго элемента (слева) очереди
+		elem* temp = this->get_b();
+		while (temp->Prev != this->a) {
 			temp = temp->Prev;
 		}
-		delete this->a; // когда дошли, удаляем первый элемент, очищаем память
-		this->a = temp; // теперь a - это ранее второй элемент очереди становится первым, и т.д.
-		this->a->Prev = nullptr; // указатель бывшего второго элемента очищаем(удаляем), т.к. элемент на которой он указывал, был удален
+		delete this->a;
+		this->a = temp;
+		this->a->Prev = nullptr;
 	}
-	this->k--; // уменьшаем счетчик элементов на 1
+	this->k--;
 	return *this;
 }
 
@@ -249,26 +244,18 @@ queue_base& operator-(queue_base& left, queue_base& right)
 }
 
 queue_base& operator+=(queue_base& left, double valuev) {
-	elem* temp = new elem; // Выделяем память для объекта структуры elem.
-	if (left.k == 0) { // если в очереди 0 элементов 
-		temp->Val = valuev; // то присваиваем в поле Val переменной temp значение, введенное с клавиатуры
-		temp->Prev = nullptr; // в указатель на предыдущий присваиваем значение нулевого указателя, т.к. элемент всего 1
-		left.a = temp; // переменные а и б отвечают за первый и последний элемент в очереди, т.к. в очереди 1 элемент, то он является одновременно первым и последним
-		left.b = temp; // temp - "временный" объект структуры присваюващий значения полям базового класса
+	elem* temp = new elem;
+	if (left.k == 0) {
+		temp->Val = valuev;
+		temp->Prev = nullptr;
+		left.a = temp;
+		left.b = temp;
 	}
 	else {
-		temp->Val = valuev; // т.к. это не первый элемент в очереди, в поле val присваиваем значение введенное с клавиатуры
-		temp->Prev = left.b; // в поле prev присваиваем значение указателя на предыдущий элемент
-		left.b = temp; // значение и адрес "временной" переменной присваим объекту б, т.е. указатель объекта б теперь имеет указатель на передстоящий элемент в очереди
+		temp->Val = valuev;
+		temp->Prev = left.b;
+		left.b = temp;
 	}
-	left.k++; // увеличиваем счетчик элементов очереди
+	left.k++;
 	return left;
 }
-
-//ostream& operator << (ostream& s, queue_base& queue) {
-//	if (!queue.get_k()) {
-//		cout << endl << "Очередь пуста!";
-//		return s;
-//	}
-//
-//}
